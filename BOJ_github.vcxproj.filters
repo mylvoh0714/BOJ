@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="10866.cpp">
+    <ClCompile Include="10866_deque(c++).cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
