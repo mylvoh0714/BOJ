@@ -1,4 +1,4 @@
-//10866 deque(µ¦)eee
+//10866 deque(µ¦)
 #include <iostream>
 using namespace std;
 
