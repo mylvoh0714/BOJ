@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="10828_stack(c++).cpp">
+    <ClCompile Include="10845_queue%28cArray%29.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
