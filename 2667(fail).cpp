@@ -1,10 +1,13 @@
 // BOJ_2667 단지번호붙이기
 #include <iostream>
 #include <string>
+#include <vector>
 #include <queue>
+#include <algorithm>
 using namespace std;
 queue<pair<int, int>> q;
-int part_result[100],result;
+vector<int> part_result;
+int result;
 int visited[26][26];
 int map[26][26];
 int dx[] = { 0,0,1,-1 };
@@ -13,7 +16,7 @@ int N;
 
 bool line_check(int x, int y,int N)
 {
-	return ( 1 <= x <= N ) && ( 1 <= y <= N );
+	return ( 1 <= x ) && (x <= N ) && (1<= y) && ( y <= N );
 }
 
 int bfs(int a, int b) // map[a][b]에서 bfs
@@ -55,19 +58,21 @@ int main()
 
 	for ( int i = 1; i <= N; i++ )
 	{
-		for ( int j = 1; j <= N; j++ )
+			for ( int j = 1; j <= N; j++ )
 		{
 			if ( map[i][j] == 1 && visited[i][j] == 0 )
 			{
-				part_result[i+j] = bfs(i, j);
 				result++;
+				int temp = bfs(i, j);
+				part_result.push_back(temp);
 			}
 		}
 	}
+	sort(part_result.begin(), part_result.end());
 	printf("%d\n", result);
-	for ( int i = 1; i <= 100; i++ )
+	for ( int i = 0; i < part_result.size(); i++ )
 	{
-		if ( part_result[i] )
-			printf("%d\n", part_result[i]);
+		printf("%d\n", part_result[i]);
 	}
+	
 }
