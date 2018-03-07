@@ -2,6 +2,7 @@
 //BOJ 문제와는 조금 다르게 원형큐로 구현.
 #include <iostream>
 #include <cstdlib>
+#include <cstring>	
 using namespace std;
 #define MAXSIZE 5
 int Queue[MAXSIZE];
