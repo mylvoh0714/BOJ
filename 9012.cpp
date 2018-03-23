@@ -23,9 +23,9 @@ int main()
 			}
 		}
 		if ( num == 0 ) puts("YES");
-		else if (num > 0) puts("NO");
+		else if ( num > 0 ) puts("NO");
 	}
 	return 0;
-	
+
 
 }
