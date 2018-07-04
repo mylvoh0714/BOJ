@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <cstring>	
 using namespace std;
-#define MAXSIZE 5
+#define MAXSIZE 10001
 int Queue[MAXSIZE];
 
 typedef struct queue
