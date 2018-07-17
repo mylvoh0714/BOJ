@@ -8,26 +8,24 @@ int n, m;
 int Start, End;
 vector<int> arr[10001];
 int visited[10001];
-int temp, result;
-queue<int> idx;
+int ans[10001];
 
 int bfs(int start)
 {
-	int ret = 1;
+	int ret = 0;
 	queue<int> q;
-	visited[start] = 1;
 	q.push(start);
 	while ( !q.empty() )
 	{
 		int here = q.front();
 		q.pop();
+		if ( visited[here] ) continue;
+		visited[here] = 1;
+		ret++;
 		for ( auto i = 0; i < arr[here].size(); i++ )
 		{
 			int there = arr[here][i];
-			if ( !visited[there] )
-			{
-				ret++;
-				visited[there] = 1;
+			if ( !visited[there] ) {
 				q.push(there);
 			}
 		}
@@ -43,23 +41,20 @@ int main()
 		scanf("%d %d", &End, &Start);
 		arr[Start].push_back(End);
 	}
+	int mx = 0;
 	for ( int i = 1; i <= n; i++ )
 	{
 		memset(visited, 0, sizeof(visited));
-		temp = bfs(i);
-		if ( result < temp )
-		{
-			result = temp;
-			if ( !idx.empty() ) idx.pop();
-			idx.push(i);
+		ans[i] = bfs(i);
+		if ( ans[i] > mx ) {
+			mx = ans[i];
 		}
-		else if ( result == temp ) idx.push(i);
-		//cout << "i : " << i << "일때의 bfs의 값 : " << result << endl;
 	}
-	while ( !idx.empty() )
+	for ( int i = 1; i <= n; i++ )
 	{
-		printf("%d ", idx.front());
-		idx.pop();
-	} 
+		if ( ans[i] == mx )
+			printf("%d ", i);
+	}
+	printf("\n");
 	return 0;
 }

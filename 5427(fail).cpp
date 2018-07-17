@@ -1,90 +1,144 @@
-// BOJ_5427 불
 #include <iostream>
-#include <cstring>
+#include <algorithm>
 #include <queue>
-#include <string>
+#include <utility>
+#include <cstring>
 using namespace std;
-queue<pair<int, int>> q;
-
-char map[1001][1001];
-bool visited[1001][1001];
+char arr[1001][1001];
+int visited[1001][1001];
 int dx[] = { 1,-1,0,0 };
 int dy[] = { 0,0,1,-1 };
-int TestCase, x, y;
-int myResult,fireResult;
+int w, h;
 
-int bfs(int a, int b) // [a][b]위치에서 출구까지 거리.
+int f_bfs(int row, int col)
 {
-	int result = 0;
-	q.push({ a,b });
-	visited[a][b] = true;
+	int ret = -1;
+	queue<pair<int, int>> q;
+	q.push({ row,col });
+	visited[row][col] = 1;
 	while ( !q.empty() )
 	{
-		result++;
-		int a = q.front().first;
-		int b = q.front().second;
+		int here_y = q.front().first;
+		int here_x = q.front().second;
 		q.pop();
-		if ( a == 1 || a == y || b == 1 || b == x )
-			return result;
-		for( int i=0;i<4;i++)
+		for ( int i = 0; i < 4; i++ )
 		{
-			int ma = a + dy[i];
-			int mb = b + dx[i];
-			if ( map[ma][mb] == '#' || visited[ma][mb] ) continue;
-			if ( map[ma][mb] == '.' || map[ma][mb] == '@' || map[ma][mb] == '*')
+			int my = here_y + dy[i];
+			int mx = here_x + dx[i];
+			if ( 1 <= my && my <= h && 1 <= mx && mx <= w && ( arr[my][mx] == '.' || arr[my][mx] == '@' )
+				&&(!visited[my][mx] || visited[my][mx] > visited[here_y][here_x] + 1) ) 
 			{
-				q.push({ ma,mb });
-				visited[ma][mb] = true;
-			}			
+				q.push({ my,mx });
+				visited[my][mx] = visited[here_y][here_x] + 1;
+				if ( h == 1 && w == 1 ) {
+					return 0;
+				}
+				else if ( h == 1 ) {
+					if ( mx == 1 || mx == w ) {
+						return ret = visited[my][mx];
+					}
+				}
+				else if ( w == 1 ) {
+					if ( my == 1 || my == h ) {
+						return ret = visited[my][mx];
+					}
+				}
+				else {
+					if ( mx == 1 || mx == w || my == 1 || my == h ) {
+						return ret = visited[my][mx];
+					}
+				}
+			}
 		}
+	}
+}
+
+int bfs(int row, int col)
+{
+	int ret = -1;
+	queue<pair<int, int>> q;
+	q.push({ row,col });
+	visited[row][col] = 1;
+	while ( !q.empty() )
+	{
+		int here_y = q.front().first;
+		int here_x = q.front().second;
+		q.pop();
+	
+		for ( int i = 0; i < 4; i++ )
+		{
+			int my = here_y + dy[i];
+			int mx = here_x + dx[i];
+			if ( 1 <= my && my <= h && 1 <= mx && mx <= w && !visited[my][mx] && (arr[my][mx] == '.' || arr[my][mx] == '@') ) {
+				q.push({ my,mx });
+				visited[my][mx] = visited[here_y][here_x] + 1;
+				if ( h == 1 && w == 1 ) {
+					return 1;
+				}
+				else if ( h == 1 ) {
+					if ( mx == 1 || mx == w ) {
+						return ret = visited[my][mx];
+					}
+				}
+				else if ( w == 1 ) {
+					if ( my == 1 || my == h ) {
+						return ret = visited[my][mx];
+					}
+				}
+				else {
+					if ( mx == 1 || mx == w || my == 1 || my == h ) {
+						return ret = visited[my][mx];
+					}
+				}
+			}
+		}
+	}
+}
+
+void _main(int TestCase)
+{
+	scanf("%d %d", &w, &h);
+	for ( int i = 1; i <= h; i++ )
+	{
+		for ( int j = 1; j <= w; j++ )
+		{
+			scanf(" %c", &arr[i][j]);
+		}
+	}
+	int man_cnt = 0;
+	int fire_cnt = 10000; // INF
+	int man_start_row, man_start_col;
+	for ( int i = 1; i <= h; i++ )
+	{
+		for ( int j = 1; j <= w; j++ )
+		{
+			if ( arr[i][j] == '*' ) {
+				fire_cnt = min(fire_cnt, f_bfs(i, j));
+				cout << "fire_bfs : " << fire_cnt << endl;
+			}
+			else if ( arr[i][j] == '@' ) {
+				man_start_row = i;
+				man_start_col = j;
+			}
+		}
+	}
+	memset(visited, 0, sizeof(visited));
+	man_cnt = bfs(man_start_row, man_start_col);
+	cout << "man_bfs : " << man_cnt << endl;
+	if ( man_cnt < fire_cnt && man_cnt != -1 ) {
+		printf("%d\n", man_cnt);
+	}
+	else {
+		printf("IMPOSSIBLE\n");
 	}
 }
 
 int main()
 {
-	scanf("%d", &TestCase);
-	while ( TestCase-- )
+	int T;
+	scanf("%d", &T);
+	for ( int TestCase = 1; TestCase <= T; TestCase++ )
 	{
-	
-		myResult = fireResult = 0;
-		memset(map, 0, sizeof(map));
-		scanf("%d %d", &x, &y); // x = 4, y=3
-		for ( int i = 1; i <= y; i++ )
-		{
-			for ( int j = 1; j <= x; j++ )
-			{
-				scanf(" %c", &map[i][j]);
-			}
-		}
-	
-		for ( int i = 1; i <= y; i++ ) // fire거리부터 계산
-		{
-			for ( int j = 1; j <= x; j++ )
-			{
-				if ( map[i][j] == '*' )
-				{
-					if ( fireResult )
-					{
-						memset(visited, 0, sizeof(visited));
-						fireResult = fireResult < bfs(i, j) ? fireResult : bfs(i, j);
-					}
-					else
-						fireResult = bfs(i, j);
-				}	
-			}
-		}
-		memset(visited, 0, sizeof(visited));
-		for ( int i = 1; i <= y; i++ )
-		{
-			for ( int j = 1; j <= x; j++ )
-			{
-				if ( map[i][j] == '@')
-					myResult = bfs(i, j);
-			}
-		}
-		if ( myResult < fireResult )
-			printf("%d\n", myResult);
-		else
-			printf("IMPOSSIBLE\n");
+		_main(TestCase);
 	}
 }
