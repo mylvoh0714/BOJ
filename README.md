@@ -1,2 +1,2 @@
 # BOJ
-BOJ + Codeground + Codeforces
+Baekjoon online judge Problems
