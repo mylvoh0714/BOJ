@@ -1,14 +1,14 @@
-#include <cstdio>
+#include <iostream>
+#include <vector>
 using namespace std;
 
 int main()
 {
-    int arr[] = {5,10,15,20};
-    int* parr = arr;
-    int i;
-    for(i=0;i<4;i++)
+    int n; cin >> n;
+    for(int i=0;i<n;i++)
     {
-        printf("%d\n",arr[i]);
+        cout << "hello world" << endl;
     }
+    vector<int> arr;
 
 }
