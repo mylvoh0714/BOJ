@@ -1,25 +1,21 @@
 // 10816_숫자카드2
 #include <iostream>
-#include <map>	
 #include <algorithm>
 using namespace std;
-map<int, int> mp;
-
+int n, m;
+int a[500001];
+int b[500001];
 int main()
 {
-	int N1, N2, num;
-	scanf("%d", &N1);
-	while ( N1-- )
-	{
-		scanf("%d", &num);
-		mp[num]++;
+	scanf("%d", &n);
+	for ( int i = 0; i < n; i++ ) scanf("%d", a + i);
+	scanf("%d", &m);
+	for ( int i = 0; i < m; i++ ) scanf("%d", b + i);
+	sort(a, a + n);
+	for ( int i = 0; i < m; i++ ) {
+		int tar = b[i];
+		auto itr1 = lower_bound(a, a + n, tar) - a;
+		auto itr2 = upper_bound(a, a + n, tar) - a;
+		cout << itr2 - itr1 << ' ';
 	}
-
-	scanf("%d", &N2);
-	while ( N2-- )
-	{
-		scanf("%d", &num);
-		printf("%d ", mp[num]);
-	}
-	return 0;
 }
